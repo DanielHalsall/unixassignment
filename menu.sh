@@ -3,10 +3,10 @@
 choice=1
 choiceSub=1
 newFile=Y
-TRACK_LOG="repoLog/repoTrack.log"
 nm=$USER
 dt=$(date)
 chng=""
+repo=$REPO_DIR/$SELECTED_REPO
 locallog="repoLog/repoTrack.log"
 
 createRepsitory()
@@ -46,20 +46,20 @@ addFile()
 
 chkingit()
 {
-    if [[ ! -e "REPOSITORY LOCATION/$CHECK_OUT_FILE" ]]
+    if [[ ! -e "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE" ]]
         then
             echo "This file does not exist."
             echo "EXITING"
             exit 1
     fi
     
-    if [[ ! -e "REPOSITORY LOCATION/FILE LOCATION/$CHECK_OUT_FILE.lock" ]] 
+    if [[ ! -e "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock" ]] 
         then
             echo "This file cannot be checked out currently."
             echo "EXITING"
             exit 1
     fi
-    rm "REPOSITORY LOCATION/FILE LOCATION/$CHECK_OUT_FILE.lock"
+    rm "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock"
 }
 
 #Check File
@@ -70,18 +70,18 @@ chkingit()
 checkFile()
 {
     
-    if [[ ! -e "REPOSITORY LOCATION/FILE LOCATION/$FILE_TO_CHECK" ]]
+    if [[ ! -e "$REPO_DIR/$SELECTED_REPO/$FILE_TO_CHECK" ]]
         then
 	        echo "Check complete: "
             echo "The file does not exist"
             exit 1
     fi
     
-    if [[ -e "REPOSITORY LOCATION/FILE LOCATION/$FILE_TO_CHECK.lock" ]] 
+    if [[ -e "$REPO_DIR/$SELECTED_REPO/$FILE_TO_CHECK.lock" ]] 
         then 
             echo "Check complete: "
             echo "The following user already checked out this file:"
-            cat "REPOSITORY LOCATION/FILE LOCATION/$FILE_TO_CHECK.lock"
+            cat "$REPO_DIR/$SELECTED_REPO/$FILE_TO_CHECK.lock"
             exit 1
     fi  
 
@@ -97,22 +97,22 @@ checkFile()
 
 chkOutGit()
 {
-    if [[ ! -e "REPOSITORY LOCATION/FILE LOCATION" ]]
+    if [[ ! -e "$REPO_DIR/$SELECTED_REPO" ]]
         then 
             echo "This file does not exist."
             echo "UNSUCCESSFUL: EXITING"
             exit 1
     fi
     
-    if [[ -e "REPOSITORY LOCATION/FILE LOCATION/$CHECK_OUT_FILE.lock" ]] 
+    if [[ -e "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock" ]] 
         then 
             echo "This file has already been checked out by "
-            cat "REPOSITORY LOCATION/$CHECK_OUT_FILE.lock"
+            cat "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock"
             echo "UNSUCCESSFUL: EXITING"
             exit 1
     fi  
-    touch "REPOSITORY LOCATION/FILE LOCATION/$CHECK_OUT_FILE.lock"
-    echo "$USER @ $(date)" > "REPOSITORY LOCATION/$CHECK_OUT_FILE.lock"
+    touch "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock"
+    echo "$USER @ $(date)" > "$REPO_DIR/$SELECTED_REPO/$CHECK_OUT_FILE.lock"
 }
 
 #Log script
